@@ -1,19 +1,17 @@
-import { useState, useCallback, useEffect, useMemo, useRef } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 
 import './App.css';
 
 function App() {
   const [isPanning, setIsPanning] = useState(false);
   const [pan, setPan] = useState([0, 0]);
-  const panOrigin = useRef(null);
-
+  
   const onMouseDown = useCallback(e => {
     setIsPanning(true);
   }, []);
 
   const onMouseUp = useCallback(e => {
     setIsPanning(false);
-    panOrigin.current = null;
   }, []);
 
   useEffect(() => {

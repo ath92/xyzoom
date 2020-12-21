@@ -28,3 +28,7 @@ html, body {
     height: 300px;
     background-color: red;
 }
+
+.second:hover{
+    width: 310px;
+}

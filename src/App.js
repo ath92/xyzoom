@@ -1,6 +1,9 @@
 import { useState, useCallback, useEffect, useMemo, useRef } from "react";
 
 import './App.css';
+import Measured from "./components/Measured";
+
+const onResize = box => console.log(box);
 
 function App({
   zoomSensitivity = 0.001,
@@ -20,7 +23,7 @@ function App({
 
   const onScroll = useCallback(e => {
     setZoom(prevZoom => Math.max(prevZoom + e.deltaY * zoomSensitivity, .05));
-  }, []);
+  }, [zoomSensitivity]);
 
   useEffect(() => {
     window.addEventListener('mousedown', onMouseDown);
@@ -30,7 +33,7 @@ function App({
       window.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mouseup', onMouseUp);
     }
-  }, [onMouseUp, onMouseDown]);
+  }, [onMouseUp, onMouseDown, onScroll]);
 
   useEffect(() => {
     let newX;
@@ -73,10 +76,10 @@ function App({
         <div className="first">
           <h2>This is some context</h2>
         </div>
-        <div className="second">
+        <Measured onMeasure={onResize} className="second">
           <h1>This is different stuff</h1>
           <p>This is some context</p>
-        </div>
+        </Measured>
     </div>
     </div>
   );

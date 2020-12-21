@@ -19,7 +19,7 @@ function App({
   }, []);
 
   const onScroll = useCallback(e => {
-    setZoom(prevZoom => Math.max(prevZoom - e.deltaY * zoomSensitivity, .05));
+    setZoom(prevZoom => Math.max(prevZoom + e.deltaY * zoomSensitivity, .05));
   }, []);
 
   useEffect(() => {
@@ -40,8 +40,8 @@ function App({
         const difX = e.clientX - mousePosition.current[0];
         const difY = e.clientY - mousePosition.current[1];
         setPan(prevPan => {
-          newX = (newX ?? prevPan[0]) + difX / zoom;
-          newY = (newY ?? prevPan[1]) + difY / zoom;
+          newX = (newX ?? prevPan[0]) + difX * zoom;
+          newY = (newY ?? prevPan[1]) + difY * zoom;
           return [newX, newY];
         });
       }
@@ -53,24 +53,31 @@ function App({
 
   const panContainerStyle = useMemo(() => {
     return {
-      transform: `translate3d(${pan[0]}px, ${pan[1]}px, 0) scale(${zoom})`,
-      // transformOrigin: `${mousePosition.current[0]}px ${mousePosition.current[1]}px`,
+      transform: `translate3d(${pan[0]}px, ${pan[1]}px, 0)`,
     };
-  }, [pan, zoom]);
+  }, [pan]);
+
+  const zoomContainerStyle = useMemo(() => {
+    return {
+      transform: `scale(${1/zoom})`,
+    };
+  }, [zoom]);
 
   return (
-    <div
-      className="pan-container"
-      style={panContainerStyle}
-    >
-      hallo
-      <div className="first">
-        <h2>This is some context</h2>
-      </div>
-      <div className="second">
-        <h1>This is different stuff</h1>
-        <p>This is some context</p>
-      </div>
+    <div style={zoomContainerStyle}>
+      <div
+        className="pan-container"
+        style={panContainerStyle}
+      >
+        hallo
+        <div className="first">
+          <h2>This is some context</h2>
+        </div>
+        <div className="second">
+          <h1>This is different stuff</h1>
+          <p>This is some context</p>
+        </div>
+    </div>
     </div>
   );
 }
